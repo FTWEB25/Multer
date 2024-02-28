@@ -1,10 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Flex, Spacer, Button, Image } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import CustomAvatar from "./CustomAvatar";
 
 function Navbar() {
-  const user = JSON.parse(localStorage.getItem("user"));
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const userFromStorage = JSON.parse(localStorage.getItem("user"));
+    if (userFromStorage) {
+      setUser(userFromStorage);
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    setIsLoggedIn(false);
+    setUser(null);
+  };
+
   return (
     <Flex
       as="nav"
@@ -35,10 +53,9 @@ function Navbar() {
         </Link>
       </Flex>
 
-      {/* Sign Up or Avatar based on login status */}
       <Flex align="center">
-        {user ? (
-          <CustomAvatar user={user}/>
+        {isLoggedIn ? (
+          <CustomAvatar user={user} handleLogout={handleLogout} />
         ) : (
           <Link to="/signup">
             <Button colorScheme="teal">Sign Up</Button>

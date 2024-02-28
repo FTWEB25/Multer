@@ -1,14 +1,22 @@
-import React from "react";
-
-function CustomAvatar({user}) {
+import { Avatar, Menu, MenuButton, MenuList, MenuItem, MenuGroup, Button } from "@chakra-ui/react";
+function CustomAvatar({ handleLogout,user }) {
+  const logout=()=>{
+    handleLogout()
+  }
   return (
-    <div>
-      <img
+    <Menu>
+      <MenuButton
+        as={Avatar}
+        name={user.name}
         src={`http://localhost:8080/users/images/${user.image}`}
-        alt={user.name}
-        style={{ width: "40px", height: "40px", borderRadius: "50%" }}
       />
-    </div>
+      <MenuList>
+        <MenuGroup color={"blueviolet"} title="Profile">
+          <MenuItem color={"black"}>My Account</MenuItem>
+          <MenuItem color={"black"} onClick={logout}>Logout </MenuItem>
+        </MenuGroup>
+      </MenuList>
+    </Menu>
   );
 }
 
